@@ -24,7 +24,7 @@ public class FriendsList {
 		
 	}
 	
-	public void getFriends() {
+	public void setFriends() {
 		try {
 			nbr_user = id;
 			stmt = connection.createStatement();
@@ -58,6 +58,10 @@ public class FriendsList {
 		stmt = connection.createStatement();	
 		sql="INSERT INTO listeami (ami,nbr_user) values ('"+ ami + "','" + nbr_user + "')";
 		stmt.executeUpdate(sql);
+		
+	}
+	public void getFriends() {
+		connecte();
 		
 	}
 	

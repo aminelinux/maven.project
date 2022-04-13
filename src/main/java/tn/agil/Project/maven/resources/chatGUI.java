@@ -24,7 +24,13 @@ import tn.agil.Project.maven.chat.*;
 public class chatGUI  {
 	private StackPane root = new StackPane();
 	private StackPane centrePane;
+	
+	//friendsListViews to share
+	FriendsListViews friends = new FriendsListViews();
+	
+	// main Border left rigt top center and bottom
 	BorderPane bPane;
+	
 	private Scene main;
 	private PrimaryController pr;
 	//boxes
@@ -56,6 +62,7 @@ public class chatGUI  {
 		centrePane = new StackPane();
 		bPane = new BorderPane();
 		hBox = new HBox();
+		pr = new PrimaryController();
 		m = new Menu("File");
 		m.setStyle("-fx-font-weight: bold");
 		item1 = new MenuItem("Add friends");
@@ -101,11 +108,10 @@ public class chatGUI  {
 		vboxM.setAlignment(Pos.TOP_CENTER);
 		vboxM.getChildren().addAll(la);
 		hBox.getChildren().addAll(mb);
-		bPane.setTop(hBox);
+		
 		centrePane.setAlignment(Pos.TOP_CENTER);
 		centrePane.getChildren().addAll(vboxM);
-		bPane.setCenter(centrePane);
-		bPane.setLeft(buttonChat);
+		
 		vbox = new VBox();
 		vbox.setMinWidth(200.0);
 		vbox.setBackground(new Background(new BackgroundFill(Color.web("#dae0e0"),new CornerRadii(10),new Insets(10,10,10,10))));
@@ -114,9 +120,25 @@ public class chatGUI  {
 		friend.setPadding(new Insets(10,10,10,10));
 		friend.setBackground(new Background(new BackgroundFill(Color.web("#f77e86"),CornerRadii.EMPTY,new Insets(10,10,10,10))));
 		friend.setAlignment(Pos.CENTER);
-		vbox.getChildren().addAll(friend);
+		vbox.getChildren().addAll(friends);
+		//border pane creation
+		bPane.setTop(hBox);
+		bPane.setCenter(centrePane);
+		bPane.setLeft(buttonChat);
 		bPane.setRight(vbox);
+		
 		root.getChildren().addAll(bPane);
+		buttonChat.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				pr = new PrimaryController();
+				pr.start(null);
+				
+			}
+			
+			
+		});
 		item1.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
