@@ -17,11 +17,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import tn.agil.Project.maven.resources.ClientChat;
 
-public class PrimaryController extends Application{
+public class PrimaryController extends VBox{
 
     private ChatGateway gateway;
     
@@ -30,75 +32,69 @@ public class PrimaryController extends Application{
     private TextField comment;
 
 	private Label label;
-
+	private String text;
+	private TextField txt;
+	private Button b;
+	private HBox hb;
            
     
-    public void PrimaryController() {
-    	gateway = new ChatGateway(textArea);
+    public PrimaryController() {
+    	
+    	txt = new TextField();
+    	gateway.sendHandle("amine");
+		 hb = new HBox();
+		 b = new Button();
+		 b.setText("Send");
+		 hb.getChildren().addAll(txt,b);
+		 this.getChildren().addAll(hb);
+		 txt.getText();
+		 b.setOnAction(new EventHandler<ActionEvent>() {
 
-        // Put up a dialog to get a handle from the user
-        TextInputDialog dialog = new TextInputDialog("you");
-        dialog.setTitle("Start Chat");
-        dialog.setHeaderText(null);
-        dialog.setContentText("Enter a handle:");
+			@Override
+			public void handle(ActionEvent event) {
+				text = txt.getText();
+				gateway.sendComment(text);
+				//gateway.sendHandle("amine");
+				
+			}
+			 
+		 });
 
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(name -> gateway.sendHandle(name));
-        
-       
+    	this.getChildren().addAll(txt,b);
+
         // Start the transcript check thread
         new Thread(new TranscriptCheck(gateway,textArea)).start();
     }
-    private void sendComment(ActionEvent event) {
-        String text = comment.getText();
-        gateway.sendComment(text);
-    }
-	@Override
-	public void start(Stage stage) {
-		 VBox root = new VBox();
-	        root.setPadding(new Insets(10));
-	        root.setSpacing(10);
-
-	        this.label = new Label();
-
-	        Button button = new Button("Enter your name");
-
-	        button.setOnAction(new EventHandler<ActionEvent>() {
-
-	            @Override
-	            public void handle(ActionEvent event) {
-	            	PrimaryController();
-	            }
-	        });
-
-	        root.getChildren().addAll(button, label);
-
-	        Scene scene = new Scene(root, 450, 250);
-	        stage.setTitle("TextInputDialog");
-	        stage.setScene(scene);
-
-	        stage.show();
-
-		
-	}
     
-   
-    
+    //private  nameUser()
 }
 
+/**
+ * 
+ * @author Ce-PC
+ *
+ */
 class TranscriptCheck implements Runnable, ChatConstants {
     private ChatGateway gateway; // Gateway to the server
     private TextArea textArea; // Where to display comments
     private int N; // How many comments we have read
     
-    /** Construct a thread */
+    
+    /**
+     * Construct a thread
+     * @param gateway
+     * @param textArea
+     */
     public TranscriptCheck(ChatGateway gateway,TextArea textArea) {
       this.gateway = gateway;
       this.textArea = textArea;
       this.N = 0;
     }
 
-    /** Run a thread */
+    /**
+     * 
+     * Run a thread 
+     */
     public void run() {
       while(true) {
           if(gateway.getCommentCount() > N) {

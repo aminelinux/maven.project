@@ -25,17 +25,30 @@ public class chatGUI  {
 	private StackPane root = new StackPane();
 	private StackPane centrePane;
 	
-	//friendsListViews to share
+	/**
+	 * friendsListViews to share
+	 */
 	FriendsListViews friends = new FriendsListViews();
 	
-	// main Border left rigt top center and bottom
+	/**
+	 * main Border left right top center and bottom
+	 */
 	BorderPane bPane;
 	
 	private Scene main;
 	private PrimaryController pr;
-	//boxes
+	/**
+	 * Horizontal box for the menu bar
+	 */
 	HBox hBox ;
+	/**
+	 * Vertical Box For Friends List Background + friends
+	 */
 	VBox vbox;
+	
+	/**
+	 * Vertical Box For Message
+	 */
 	VBox vboxM;
 	
 	Button buttonChat = new Button("chat");
@@ -50,21 +63,41 @@ public class chatGUI  {
 	MenuItem item8 ;
 	MenuItem item9 ;
 	MenuItem item10 ;
-	//Menus
+	
+	/**
+	 * Menu called File
+	 * integration of the item 1, item 2,item 3
+	 */
 	Menu m ;
+	/**
+	 * Menu called Option
+	 * integration of the item 4, item 5
+	 */
 	Menu m1 ;
+	/**
+	 * Menu called Option
+	 * integration of item 6,item 7
+	 */
 	Menu m2 ;
+	/**
+	 * Menu Called Help
+	 * integration o item 8,item 9, item 10
+	 */
 	Menu m3 ;
-	
+	/**
+	 * MenuBar 
+	 */
 	MenuBar mb;
-	
+	/**
+	 * Constructor for main ChatGUI Interface App
+	 * @param id give the id user that is already connected
+	 */
 	public chatGUI(int id) {
 		centrePane = new StackPane();
 		bPane = new BorderPane();
 		hBox = new HBox();
 		pr = new PrimaryController();
-		m = new Menu("File");
-		m.setStyle("-fx-font-weight: bold");
+		
 		item1 = new MenuItem("Add friends");
 		item1.setStyle("-fx-font-weight: bold;-fx-font-family: Arial, Helvetica, sans-serif ");
 		item2 = new MenuItem("Block friends");
@@ -86,6 +119,8 @@ public class chatGUI  {
 		item10 = new MenuItem("About App");
 		item10.setStyle("-fx-font-weight: bold");
 		
+		m = new Menu("File");
+		m.setStyle("-fx-font-weight: bold");
 		m1 = new Menu("Option");
 		m1.setStyle("-fx-font-weight: bold");
 		m2 = new Menu("Accounts");
@@ -93,13 +128,14 @@ public class chatGUI  {
 		m3 = new Menu("Help");
 		m3.setStyle("-fx-font-weight: bold");
 		
-		mb = new MenuBar();
 		m.getItems().addAll(item1,item2,item3);
 		m1.getItems().addAll(item4,item5);
 		m2.getItems().addAll(item6,item7);
 		m3.getItems().addAll(item8,item9,item10);
 		
+		mb = new MenuBar();
 		mb.getMenus().addAll(m,m1,m2,m3);
+		
 		Label la = new Label("Message");
 		
 		vboxM = new VBox();
@@ -112,15 +148,12 @@ public class chatGUI  {
 		centrePane.setAlignment(Pos.TOP_CENTER);
 		centrePane.getChildren().addAll(vboxM);
 		
+		//vbox background for friendsList
 		vbox = new VBox();
 		vbox.setMinWidth(200.0);
 		vbox.setBackground(new Background(new BackgroundFill(Color.web("#dae0e0"),new CornerRadii(10),new Insets(10,10,10,10))));
-		Label friend = new Label("Friends :");
-		friend.setStyle("-fx-font-weight: bold");
-		friend.setPadding(new Insets(10,10,10,10));
-		friend.setBackground(new Background(new BackgroundFill(Color.web("#f77e86"),CornerRadii.EMPTY,new Insets(10,10,10,10))));
-		friend.setAlignment(Pos.CENTER);
 		vbox.getChildren().addAll(friends);
+		
 		//border pane creation
 		bPane.setTop(hBox);
 		bPane.setCenter(centrePane);
@@ -132,21 +165,18 @@ public class chatGUI  {
 
 			@Override
 			public void handle(ActionEvent event) {
+				buttonChat.setVisible(false);
 				pr = new PrimaryController();
-				pr.start(null);
+				bPane.setLeft(pr);
 				
 			}
-			
-			
 		});
 		item1.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				
-				
-			}
-			
+					
+			}		
 		});
 		
 		main = new Scene(root,400,600);
@@ -155,8 +185,4 @@ public class chatGUI  {
 		App.getStage().setTitle("chat");
 		App.getStage().setAlwaysOnTop(true);
 	}
-	
-	
-	
-
 }

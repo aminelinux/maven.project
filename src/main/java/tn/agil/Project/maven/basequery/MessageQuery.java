@@ -32,7 +32,6 @@ public class MessageQuery {
 				e.printStackTrace();
 			}
 	}
-	
 	/**
 	 * return statement having the a blob of friend request
 	 * @return the data containing friends list
@@ -52,15 +51,12 @@ public class MessageQuery {
 	 * @throws SQLException
 	 */
 	private String DecryptMessage(ResultSet res) throws SQLException {
-		
 		Blob readBlob = res.getBlob(3);
 		byte[] bytes = readBlob.getBytes(1, (int) readBlob.length());
 		String str = new String(bytes);
 		System.out.println("Decryptmessage");
-		return str;
-		
+		return str;	
 	}
-	
 	/**
 	 * set a the new Blob request d'ajout
 	 * 
@@ -72,18 +68,9 @@ public class MessageQuery {
 		byte[] bytes = str.getBytes("UTF-8");
 		Blob blobData = connection.createBlob();
 		blobData.setBytes((int) blobData.length(), bytes);
-		
-		String sql = "INSERT INTO listeami ('dajout') VALUES ('" + blobData + "')";
+		String sql = "INSERT INTO listeami (dajout) VALUES ('" + blobData + "')";
 		PreparedStatement pat = connection.prepareStatement(sql);
 		int res = pat.executeUpdate();
 		return res;
 	}
-	
-	
-//	private ResultSet getMsgText() {
-//	stmt = connection.createStatement();
-//	sql = "SELECT dajout FROM listeami where nbr_user = '"+  +"'";
-//	rs = stmt.executeQuery(sql);
-//	return rs;
-//}
 }
