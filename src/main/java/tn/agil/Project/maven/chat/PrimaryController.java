@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,56 +31,66 @@ public class PrimaryController extends VBox{
     private TextArea textArea;
     
     private TextField comment;
-
-	private Label label;
-	private String text;
-	private TextField txt;
+    
 	private Button b;
 	private HBox hb;
-           
-    
     public PrimaryController() {
     	
-    	txt = new TextField();
-    	gateway.sendHandle("amine");
-		 hb = new HBox();
-		 b = new Button();
-		 b.setText("Send");
-		 hb.getChildren().addAll(txt,b);
+    	comment = new TextField();
+    	b = new Button("send");
+    	b.setAlignment(Pos.BASELINE_CENTER);
+		hb = new HBox();
+		 
+		
+		 hb.getChildren().addAll(comment,b);
 		 this.getChildren().addAll(hb);
-		 txt.getText();
 		 b.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				//textArea = new TextArea();
+				gateway = new ChatGateway(textArea);
+				String text = comment.getText();
+				System.out.println();
+		        gateway.sendHandle(text);
+		        hb.setVisible(false);
+		        b.setVisible(false);
+		        msgAppend();
+			}
+		 });
+    	this.getChildren().addAll(b);
+        // Start the transcript check thread
+       // new Thread(new TranscriptCheck(gateway,textArea)).start();
+    }
+    
+    public void msgAppend() {
+    	comment= new TextField();
+    	textArea = new TextArea();
+    	Button chatButton = new Button("send");
+    	this.getChildren().addAll(textArea);
+    	HBox hbcomm = new HBox(comment,chatButton);
+    	this.getChildren().add(hbcomm);
+    	chatButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				text = txt.getText();
-				gateway.sendComment(text);
-				//gateway.sendHandle("amine");
-				
+				gateway.sendComment(comment.getText());
+				comment.setText("");
 			}
-			 
-		 });
-
-    	this.getChildren().addAll(txt,b);
-
-        // Start the transcript check thread
-        new Thread(new TranscriptCheck(gateway,textArea)).start();
+    		
+    	});
+    	
+    	new Thread(new TranscriptCheck(gateway,textArea)).start();
+    	
+    	
     }
-    
-    //private  nameUser()
 }
-
 /**
- * 
  * @author Ce-PC
- *
  */
 class TranscriptCheck implements Runnable, ChatConstants {
     private ChatGateway gateway; // Gateway to the server
     private TextArea textArea; // Where to display comments
     private int N; // How many comments we have read
-    
-    
     /**
      * Construct a thread
      * @param gateway
@@ -90,7 +101,6 @@ class TranscriptCheck implements Runnable, ChatConstants {
       this.textArea = textArea;
       this.N = 0;
     }
-
     /**
      * 
      * Run a thread 

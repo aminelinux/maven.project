@@ -154,6 +154,9 @@ public class chatGUI  {
 		vbox.setBackground(new Background(new BackgroundFill(Color.web("#dae0e0"),new CornerRadii(10),new Insets(10,10,10,10))));
 		vbox.getChildren().addAll(friends);
 		
+		buttonChat.setAlignment(Pos.CENTER);
+		
+		
 		//border pane creation
 		bPane.setTop(hBox);
 		bPane.setCenter(centrePane);
