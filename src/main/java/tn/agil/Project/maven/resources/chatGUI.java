@@ -207,7 +207,7 @@ public class chatGUI  {
 			}		
 		});
 		
-		main = new Scene(root,400,600);
+		main = new Scene(root,700,700);
 		App.getStage().setScene(main);
 		App.getStage().show();
 		App.getStage().setTitle("chat");

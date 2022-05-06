@@ -46,7 +46,7 @@ public class FriendsListViews extends VBox{
 		for(String f : fr) {
 				HBox h = new HBox();
 				h.getChildren().add(frinedsAvailabilities(available.get(i)));
-				h.getChildren().add(frindsLabelsCreation(f));
+				h.getChildren().add(friendsLabelsCreation(f));
 				this.getChildren().add(h);
 				i++;
 		}
@@ -56,7 +56,7 @@ public class FriendsListViews extends VBox{
 	 * @param s friend name
 	 * @return a label containing a friends name  
 	 */
-	private Button frindsLabelsCreation(String s) {
+	private Button friendsLabelsCreation(String s) {
 		//new Lable creation
 		
 		Button x = new Button(s);

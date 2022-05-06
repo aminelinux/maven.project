@@ -11,11 +11,13 @@ public class Authentification {
 	protected static int idUt;
 	private String userName;
 	private String userPass;
-	private Statement stmt;
-	Connection connection;
-	String sql="";
-	ResultSet sc;
 	private boolean status = false;
+	
+	private Statement stmt;
+	private Connection connection;
+	private ResultSet sc;
+	private String sql="";
+	
 	
 	/**
 	 * Constructor Authentifiaction
@@ -56,8 +58,6 @@ public class Authentification {
 		
 		try {
 			//Class.forName("com.mysql.jdbc.Driver");
-			//connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/basechat", "root", "");
-			//System.out.println(connection.getAutoCommit());
 			connect();
 			stmt = connection.createStatement();
 			sql="Select * from utilisateur where login_ut='" + userName + "' and pass_ut='" + userPass + "'";
@@ -109,13 +109,21 @@ public class Authentification {
 		private void idUtulisateur() throws SQLException {
 			idUt=idUT();
 		}
-
+		/**
+		 * set the disponibilite to on 1:true
+		 * @throws SQLException
+		 */
 		private void switchDispoToOn() throws SQLException {
 			connect();
 			final String sql = "update utilisateur set dispo='"+1+"'where id='"+idUT()+"'";
 			stmt = connection.createStatement();
 			stmt.executeUpdate(sql);
 		}
+		/**
+		 * set the disponibilite to 0:false
+		 * @param id user id
+		 * @throws SQLException
+		 */
 		private void switchDispoToOff(int id) throws SQLException {
 			connect();
 			final String sql = "update utilisateur set dispo='"+0+"'where id='"+id+"'";
