@@ -20,6 +20,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -64,6 +66,10 @@ public class MainGUI  {
         buttonExit.setStyle("-fx-background-color: #e64e4e;-fx-text-fill: #fff0f0;");
         buttonSignIn.setStyle("-fx-background-color: #e64e4e;-fx-text-fill: #fff0f0;");
         
+        Label errorLabel = new Label("Error please check your email or password");
+		errorLabel.setTextFill(Color.RED);
+        errorLabel.setVisible(false);
+        
         InputStream stream = null;
         final ImageView selectedImage = new ImageView();
         try {
@@ -101,6 +107,7 @@ public class MainGUI  {
         		userText,
                 passLabel,
                 passText,
+                errorLabel,
                 buttonLogin,
                 boxDown,
                 buttonExit);
@@ -116,21 +123,32 @@ public class MainGUI  {
 				// TODO Auto-generated method stub
 				System.exit(0);
 			}
-        	
         });
+        this.root.requestFocus();
+        root.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            
+			@Override
+			public void handle(KeyEvent event) {
+				System.out.println(event);
+				if(event.getCode().equals(KeyCode.ENTER)) {
+					buttonLogin.fire();
+					System.out.println("keypressed");
+				}	
+			}
+    	});
         buttonLogin.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				String user = userText.getText();
-				String pass = passText.getText();
+				user = userText.getText();
+				pass = passText.getText();
 				try {
 					Authentification auth = new Authentification(user,pass);
 					if(auth.state()) {
 //						 auth.idUT();
 						//errorLabel.setVisible(false);
-						 chat = new chatGUI(auth.idUT());
+						 chat = new chatGUI(auth.idUT(),getUser());
 					}else {
 						errorAuth();
 					}
@@ -141,9 +159,6 @@ public class MainGUI  {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} }
-				
-			
-        	
         });
         bRegister.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -159,12 +174,13 @@ public class MainGUI  {
 			}	
         });
         
+        
         main = new Scene(root,400,600);
 		App.getStage().setScene(main);
 		App.getStage().show();
 		App.getStage().setTitle("Login");
 		App.getStage().setAlwaysOnTop(true);
-       
+		
 		
 	}
 	
@@ -172,17 +188,13 @@ public class MainGUI  {
 		return this.user;
 	}
 	
-	public String getPass() {
-		return this.pass;
-	}
 	/**
 	 * return the StackPane
 	 * 
 	 * @return root
 	 */
 	public StackPane getStack() {
-		return root;
-		
+		return root;	
 	}
 	/**
 	 * return the MainGUI 
@@ -195,6 +207,7 @@ public class MainGUI  {
 	/**
 	 * slide to the new Scene RgistrationForm
 	 */
+	
 	public void register() {
 		 r =  new RegistrationForm();
 		 main = new Scene(r.getRegistration(),400,600);
@@ -208,11 +221,7 @@ public class MainGUI  {
 	 * small msg to show an error with authentification pass or login
 	 */
 	public void errorAuth() {
-		Label errorLabel = new Label("Error please check your email or password");
-		errorLabel.setTextFill(Color.RED);
 		errorLabel.setVisible(true);
-		root.getChildren().addAll(errorLabel);
-		
 	}
 
 }

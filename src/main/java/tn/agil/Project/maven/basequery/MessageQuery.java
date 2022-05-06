@@ -55,6 +55,7 @@ public class MessageQuery {
 		byte[] bytes = readBlob.getBytes(1, (int) readBlob.length());
 		String str = new String(bytes);
 		System.out.println("Decryptmessage");
+		
 		return str;	
 	}
 	/**

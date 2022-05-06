@@ -78,6 +78,12 @@ public class Registration {
 		connection.close();
 		return insertDone(rs);
 	}
+	
+	/**
+	 * get back if the connection is done or not 
+	 * @param rs
+	 * @return
+	 */
 	public boolean insertDone(int rs) {
 		if(rs==1)
 			return true;

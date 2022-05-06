@@ -2,6 +2,7 @@ package tn.agil.Project.maven.basequery;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,7 +21,7 @@ public class FriendsList {
 	public FriendsList(int id) throws SQLException{
 		
 		this.id = id;
-		this.initFreinds();
+		//this.initFreinds();
 		
 	}
 	
@@ -60,10 +61,32 @@ public class FriendsList {
 		stmt.executeUpdate(sql);
 		
 	}
-	public void getFriends() {
+	public String getFreinds() throws SQLException {
 		connecte();
-		
+		String description = null;
+		final String sql = "SELECT ami FROM listeami where nbr_user ="+Integer.toString(id)+"";
+		PreparedStatement stm = connection.prepareStatement(sql);
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			description = rs.getString("ami");
+		        System.out.println("# " + description);
+		    }
+		    return description;
 	}
+	
+	public String getDisponibilite(String id) throws SQLException {
+		connecte();
+		String description = null;
+		final String sql = "SELECT dispo FROM utilisateur where id ="+id+"";
+		PreparedStatement stm = connection.prepareStatement(sql);
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			description = rs.getString("dispo");
+		        System.out.println("# " + description);
+		    }
+		    return description;
+	}
+	
 	
 		
 	

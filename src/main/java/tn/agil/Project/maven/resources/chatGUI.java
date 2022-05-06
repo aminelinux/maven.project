@@ -1,5 +1,7 @@
 package tn.agil.Project.maven.resources;
 
+import java.sql.SQLException;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,17 +20,23 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.WindowEvent;
+import tn.agil.Project.maven.project.Amis;
 import tn.agil.Project.maven.project.App;
+import tn.agil.Project.maven.basequery.Authentification;
 import tn.agil.Project.maven.chat.*;
 
 public class chatGUI  {
 	private StackPane root = new StackPane();
 	private StackPane centrePane;
+	private Amis a;
+	private int id;
+	private String name;
 	
 	/**
 	 * friendsListViews to share
 	 */
-	FriendsListViews friends = new FriendsListViews();
+	FriendsListViews friends ;
 	
 	/**
 	 * main Border left right top center and bottom
@@ -50,6 +58,11 @@ public class chatGUI  {
 	 * Vertical Box For Message
 	 */
 	VBox vboxM;
+	/**
+	 * 
+	 * Center vertical Box
+	 */
+	VBox vboxChat;
 	
 	Button buttonChat = new Button("chat");
 	//items
@@ -91,12 +104,19 @@ public class chatGUI  {
 	/**
 	 * Constructor for main ChatGUI Interface App
 	 * @param id give the id user that is already connected
+	 * @throws SQLException 
 	 */
-	public chatGUI(int id) {
+	public chatGUI(int id,String user) throws SQLException {
+		this.id = id;
+		this.name = user;
+		a = new Amis(id);
+		
+		friends = new FriendsListViews(a.getFriends(),a.getDispo());
 		centrePane = new StackPane();
 		bPane = new BorderPane();
 		hBox = new HBox();
-		pr = new PrimaryController();
+		vboxChat = new VBox();
+		//pr = new PrimaryController(user);
 		
 		item1 = new MenuItem("Add friends");
 		item1.setStyle("-fx-font-weight: bold;-fx-font-family: Arial, Helvetica, sans-serif ");
@@ -159,8 +179,10 @@ public class chatGUI  {
 		
 		//border pane creation
 		bPane.setTop(hBox);
-		bPane.setCenter(centrePane);
-		bPane.setLeft(buttonChat);
+		
+		vboxChat.getChildren().addAll(buttonChat);
+		bPane.setCenter(vboxChat);
+		bPane.setLeft(centrePane);
 		bPane.setRight(vbox);
 		
 		root.getChildren().addAll(bPane);
@@ -168,9 +190,12 @@ public class chatGUI  {
 
 			@Override
 			public void handle(ActionEvent event) {
+				
+				pr = new PrimaryController(user);
+				//bPane.setLeft(centrePane);
+				//bPane.setCenter(pr);
+				vboxChat.getChildren().add(pr);
 				buttonChat.setVisible(false);
-				pr = new PrimaryController();
-				bPane.setLeft(pr);
 				
 			}
 		});
@@ -187,5 +212,18 @@ public class chatGUI  {
 		App.getStage().show();
 		App.getStage().setTitle("chat");
 		App.getStage().setAlwaysOnTop(true);
+		App.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				try {
+					Authentification x = new Authentification(id);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+				System.exit(0);
+			}
+		});
 	}
 }

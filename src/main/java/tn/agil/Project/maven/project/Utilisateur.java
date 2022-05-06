@@ -7,6 +7,7 @@ import java.util.Scanner;
 import tn.agil.Project.maven.basequery.MessageQuery;
 
 public class Utilisateur {
+	public static int id_ut;
 	public int ut_id;
 	private Scanner sc;
 	

@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 public class Authentification {
 	
+	protected static int idUt;
 	private String userName;
 	private String userPass;
 	private Statement stmt;
@@ -16,11 +17,29 @@ public class Authentification {
 	ResultSet sc;
 	private boolean status = false;
 	
+	/**
+	 * Constructor Authentifiaction
+	 * @param name
+	 * @param pass
+	 * @throws ClassNotFoundException
+	 */
 	public Authentification(String name,String pass) throws ClassNotFoundException {
 		userName = name;
 		userPass = pass;
 		connecte();
 	}
+	/**
+	 * Constructor For exit
+	 * @param id
+	 * @throws SQLException 
+	 */
+	public Authentification(int id) throws SQLException {
+		switchDispoToOff(id);
+	}
+	
+	/**
+	 * connection to the base using jdbc getConnection
+	 */
 	private void connect() {
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/basechat", "root", "");
@@ -29,7 +48,10 @@ public class Authentification {
 			e.printStackTrace();
 		}
 	}
-		
+	/**
+	 * Connection to the data base 
+	 * @throws ClassNotFoundException
+	 */
 	private void connecte() throws ClassNotFoundException {
 		
 		try {
@@ -42,10 +64,13 @@ public class Authentification {
 			sc = stmt.executeQuery(sql);
 			System.out.println(sc);
 			
-			if(sc.next()) 
+			if(sc.next()) {
 				status = true;
+				switchDispoToOn();
+			}
 			else 
 				status = false;
+			idUtulisateur();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -54,6 +79,11 @@ public class Authentification {
 		
 		
 	}
+	/**
+	 * get back if the conneciion is done coorectly or not 
+	 * 
+	 * @return true:connected false:error connection 
+	 */
 	
 		public boolean state() {
 			if(status)
@@ -61,9 +91,37 @@ public class Authentification {
 			else
 				return false;
 		}
+		/**
+		 * 
+		 * get the id of user connected to the base
+		 * @return
+		 * @throws SQLException
+		 */
 		public int idUT() throws SQLException {
 			ResultSet rs = this.sc;
 			return Integer.parseInt(rs.getString(1));
 		}
+		
+		/**
+		 * get the id utilisateur form a resultset and traoform it to a static int
+		 * @throws SQLException 
+		 */
+		private void idUtulisateur() throws SQLException {
+			idUt=idUT();
+		}
+
+		private void switchDispoToOn() throws SQLException {
+			connect();
+			final String sql = "update utilisateur set dispo='"+1+"'where id='"+idUT()+"'";
+			stmt = connection.createStatement();
+			stmt.executeUpdate(sql);
+		}
+		private void switchDispoToOff(int id) throws SQLException {
+			connect();
+			final String sql = "update utilisateur set dispo='"+0+"'where id='"+id+"'";
+			stmt = connection.createStatement();
+			stmt.executeUpdate(sql);
+		}
+
 	
 }

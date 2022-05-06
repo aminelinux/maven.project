@@ -1,9 +1,11 @@
 package tn.agil.Project.maven.resources;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -17,14 +19,10 @@ import javafx.scene.text.Font;
 
 public class FriendsListViews extends VBox{
 	//list of friends from friend list
-	ArrayList<String> fr = new ArrayList<String>(){
-		{add("amine");add("akrem");add("oussema");}
-		};
+	ArrayList<String> fr;
 		
 	//Available Friends right now
-	ArrayList<Boolean> available = new ArrayList<Boolean>(){
-		{add(true);add(false);add(true);}
-		};
+	ArrayList<Boolean> available;
 	
 	//head Label 
 	private Label friend = new Label("Friends :");
@@ -34,7 +32,9 @@ public class FriendsListViews extends VBox{
 	/**
 	 * Constructor friends VBox containing user friends with their availabilities
 	 */
-	public FriendsListViews() {
+	public FriendsListViews(String[] friends,Boolean[] disponibilite) {
+		fr = new ArrayList<String>(Arrays.asList(friends));
+		available = new ArrayList<Boolean>(Arrays.asList(disponibilite));
 		this.setMinWidth(200.0);
 		this.setBackground(new Background(new BackgroundFill(Color.web("#dae0e0"),new CornerRadii(10),new Insets(10,10,10,10))));
 		friend.setStyle("-fx-font-weight: bold");
@@ -56,9 +56,16 @@ public class FriendsListViews extends VBox{
 	 * @param s friend name
 	 * @return a label containing a friends name  
 	 */
-	private Label frindsLabelsCreation(String s) {
+	private Button frindsLabelsCreation(String s) {
 		//new Lable creation
-		Label x = new Label(s);
+		
+		Button x = new Button(s);
+		x.setOnAction(e->{
+			String id;
+			id = this.getAccessibleText();
+			System.out.println(s);
+		});
+		x.setBackground(new Background(new BackgroundFill(Color.web("#9bc2c2"),new CornerRadii(10),new Insets(10,10,10,10))));
 		x.setFont(new Font("Arial", 15));
 		x.setTextFill(Color.DARKGREEN);
 		x.setPadding(new Insets(5,20,5,20));
