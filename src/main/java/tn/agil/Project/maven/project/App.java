@@ -3,6 +3,7 @@ package tn.agil.Project.maven.project;
 import tn.agil.Project.maven.resources.MainGUI;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -23,6 +24,7 @@ public class App extends Application {
     public void start(Stage primaryStage) {
     	guiStage = primaryStage;
     	MainGUI main = new MainGUI();
+    	primaryStage.getIcons().add(new Image("logoApp.png"));
         //Scene scene = new Scene(root,400,600);
         //primaryStage.setScene(scene);
         //primaryStage.show();

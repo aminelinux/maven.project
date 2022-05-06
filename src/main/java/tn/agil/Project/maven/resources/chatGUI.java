@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -212,6 +213,7 @@ public class chatGUI  {
 		App.getStage().show();
 		App.getStage().setTitle("chat");
 		App.getStage().setAlwaysOnTop(true);
+		//App.getStage().getIcons().add(new Image("logoApp.png"));
 		App.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override

@@ -111,7 +111,7 @@ public class RegistrationForm extends StackPane{
 		main = new Scene(back.getStack(),400,600);
 		App.getStage().setScene(main);
 		App.getStage().show();
-		App.getStage().setTitle("Login");
+		App.getStage().setTitle("Register");
 		App.getStage().setAlwaysOnTop(true);
 	}
 	public void addSucess(){

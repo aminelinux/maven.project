@@ -215,6 +215,10 @@ public class MainGUI  {
 		 App.getStage().show();
 		 App.getStage().setTitle("Register Form");
 		 App.getStage().setAlwaysOnTop(true);
+		 //App.getStage().getIcons().add(new Image("logoApp.png"));
+		 App.getStage().setOnCloseRequest(e->{
+			 System.exit(0);
+		 });
 	}
 	/**
 	 * 
